@@ -1,0 +1,237 @@
+.App {
+  background-color: #282c34;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden; /* Prevent scrolling */
+  position: relative;
+}
+
+.watermark {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+}
+
+.watermark-bottom-left {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+}
+
+.logos {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+
+.score-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.score-label {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.score {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.timer-label {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timer {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.waiting-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.game-over-container {
+  font-size: 24px; /* Increased font size for the score in the "Game Over" state */
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.border-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: borderColorAnimation 5s infinite;
+  border-width: 10px;
+  border-style: solid;
+  border-radius: 50px;
+  padding: 100px;
+  width: fit-content;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #222;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.arcade-score, .arcade-timer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 28px;
+  color: #fff;
+}
+
+.score-label, .timer-label {
+  font-weight: bold;
+}
+
+.score, .timer {
+  font-weight: normal;
+}
+
+.timer-label {
+  flex-shrink: 0;
+  width: 200px;
+  text-align: right;
+}
+
+.waiting-text {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.game-over-container {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+@keyframes borderColorAnimation {
+  0% { border-color: #a51c30; }   /* Harvard Crimson */
+  25% { border-color: #003366; }  /* Columbia Blue */
+  50% { border-color: #0f4d92; }  /* Yale Blue */
+  75% { border-color: #ff8c00; }  /* Princeton Orange */
+  100% { border-color: #ffcc00; } /* UPenn Yellow */
+}
+
+@keyframes confettiRain {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+.confetti {
+  position: fixed;
+  opacity: 0.7;
+  animation: confettiRain 6s ease-out infinite;
+}
+
+.confetti-1, .confetti-2, .confetti-3, .confetti-4, .confetti-5,
+.confetti-6, .confetti-7, .confetti-8, .confetti-9, .confetti-10,
+.confetti-11, .confetti-12, .confetti-13, .confetti-14, .confetti-15 {
+  width: 10px;
+  height: 20px;
+}
+
+.confetti-1 {
+  left: 5%;
+  background-color: #e74c3c;
+}
+
+.confetti-2 {
+  left: 10%;
+  background-color: #3498db;
+}
+
+.confetti-3 {
+  left: 15%;
+  background-color: #f39c12;
+}
+
+.confetti-4 {
+  left: 20%;
+  background-color: #2ecc71;
+}
+
+.confetti-5 {
+  left: 25%;
+  background-color: #9b59b6;
+}
+
+.confetti-6 {
+  left: 30%;
+  background-color: #34495e;
+}
+
+.confetti-7 {
+  left: 35%;
+  background-color: #e67e22;
+}
+
+.confetti-8 {
+  left: 40%;
+  background-color: #1abc9c;
+}
+
+.confetti-9 {
+  left: 45%;
+  background-color: #c0392b;
+}
+
+.confetti-10 {
+  left: 50%;
+  background-color: #e74c3c;
+}
+
+.confetti-11 {
+  left: 55%;
+  background-color: #3498db;
+}
+
+.confetti-12 {
+  left: 60%;
+  background-color: #f39c12;
+}
+
+.confetti-13 {
+  left: 65%;
+  background-color: #2ecc71;
+}
+
+.confetti-14 {
+  left: 70%;
+  background-color: #9b59b6;
+}
+
+.confetti-15 {
+  left: 75%;
+  background-color: #34495e;
+}
