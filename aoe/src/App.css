@@ -42,26 +42,29 @@
 }
 
 .score-label {
-  font-size: 24px;
+  font-size: 56px;
   font-weight: bold;
+  align-items: center;
   margin-bottom: 10px;
 }
 
 .score {
-  font-size: 24px;
+  font-size: 56px;
+  align-items: center;
   margin-bottom: 10px;
 }
 
 .timer-label {
-  font-size: 24px;
+  font-size: 56px;
   font-weight: bold;
-  margin-top: 10px;
+  align-items: center;
   margin-bottom: 10px;
 }
 
 .timer {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 56px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .waiting-text {
@@ -122,12 +125,12 @@
 }
 
 .waiting-text {
-  font-size: 24px;
+  font-size: 36px;
   margin-bottom: 20px;
 }
 
 .game-over-container {
-  font-size: 24px;
+  font-size: 36px;
   margin-bottom: 20px;
 }
 
