@@ -1,28 +1,29 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import io from 'socket.io-client';
-import './App.css';
-import harvardLogo from './uni-logos/harvard.png';
-import brownLogo from './uni-logos/brown.png';
-import yaleLogo from './uni-logos/yale.png';
-import princetonLogo from './uni-logos/princeton.png';
-import upennLogo from './uni-logos/upenn.png';
+import './assets/styles/App.css';
 
-import waitingMusic from './music/waiting.mp3'
-import victoryMusic from './music/columbia.mp3';
-import playingMusic from './music/playing.mp3';
-import hitSound from './music/hit.mp3'
+import harvardLogo from './assets/images/harvard.png';
+import brownLogo from './assets/images/brown.png';
+import yaleLogo from './assets/images/yale.png';
+import princetonLogo from './assets/images/princeton.png';
+import upennLogo from './assets/images/upenn.png';
+
+import waitingMusic from './assets/audio/waiting.mp3'
+import victoryMusic from './assets/audio/columbia.mp3';
+import playingMusic from './assets/audio/playing.mp3';
+import hitSound from './assets/audio/hit.mp3'
 
 function App() {
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(5); // 1:30 minutes in seconds
-  const [gameState, setGameState] = useState('IP');
+  const [time, setTime] = useState(90); // 1:30 minutes in seconds
+  const [gameState, setGameState] = useState('');
   const [winState, setWinState] = useState(false);
   const [hitCount, setHitCount] = useState({
-    harvard: 5,
-    brown: 5,
-    yale: 5,
-    princeton: 5,
-    upenn: 5,
+    harvard: 0,
+    brown: 0,
+    yale: 0,
+    princeton: 0,
+    upenn: 0,
   });
   const timerIntervalRef = useRef(null);
   const winnerThreshold = 10;
@@ -32,34 +33,46 @@ function App() {
   const victoryAudioRef = useRef(new Audio(victoryMusic));
   const hitAudioRef = useRef(new Audio(hitSound));
 
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    const socket = io('/api');
-
-    const handleData = (receivedData) => {
-      if (receivedData === 'Start') {
-        stopMusic();
-        setGameState('IP');
-      } else if (receivedData === 'End') {
-        setGameState('End');
-        stopMusic();
-      } else if (['harvard', 'brown', 'yale', 'princeton', 'upenn'].includes(receivedData.toLowerCase())) {
-        setHitCount(prevCount => {
-          playHitSound();
-          return {
-            ...prevCount,
-            [receivedData.toLowerCase()]: (prevCount[receivedData.toLowerCase()] || 0) + 1,
-          };
-        });
-      } else {
-        setGameState('Waiting');
+    const socket = io.connect('http://localhost:3001');
+  
+    socket.on('data', (receivedData) => {
+      receivedData = receivedData.trim(); 
+      switch(receivedData) { 
+        case 'Start':
+          setGameState('IP');
+          break;
+        case 'End':
+          setGameState('End');
+          break;
+        default:
+          if (['harvard', 'brown', 'yale', 'princeton', 'upenn'].includes(receivedData.toLowerCase())) {
+            setHitCount(prevCount => {
+              playHitSound();
+              return {
+                ...prevCount,
+                [receivedData.toLowerCase()]: (prevCount[receivedData.toLowerCase()] || 0) + 1,
+              };
+            });
+          } else {
+            setGameState('Waiting');
+          }
+          break; 
       }
-    }
-
-    socket.on('data', handleData);
-
-    if (gameState === 'IP') {
-      playMusic(playingAudioRef.current);
+    });
+  
+    return () => {
+      socket.disconnect();
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+  
+  useEffect(() => {
+    switch(gameState) {
+      case 'IP':
+        playMusic(playingAudioRef.current);
       timerIntervalRef.current = setInterval(() => {
         setTime(prevTime => {
           if (prevTime === 0) {
@@ -71,15 +84,20 @@ function App() {
           return prevTime - 1;
         });
       }, 1000);
-    } else if (gameState === 'Waiting') {
-      playMusic(waitingAudioRef.current);
+      break;
+      case 'Waiting':
+        playMusic(waitingAudioRef.current);
+        break;
+      case '':
+        playMusic(waitingAudioRef.current);
+        break; 
+      default:
+        break; 
     }
-
+    
     return () => {
-      socket.disconnect();
       clearInterval(timerIntervalRef.current);
       stopMusic();
-      document.body.style.overflow = 'auto';
     };
   }, [gameState]);
 
@@ -164,7 +182,7 @@ function App() {
   return (
     <div className="App">
       <h1 style={{ textAlign: 'center', marginBottom: '0px' }}>
-        Whack-A-Ivy
+        Whack-An-Ivy
         <img
           src="https://www.cs.columbia.edu/wp-content/uploads/2021/04/engineering-red.gif"
           alt="Columbia Engineering"
@@ -230,7 +248,7 @@ function App() {
         <i>&nbsp;</i>
         <i>&nbsp;</i>
         <i>&nbsp;</i>
-        {gameState === 'Waiting' && (
+        {( (gameState === 'Waiting') || (gameState === '')) && (
           <div className="waiting-text">
             <div className="game-info">
               Welcome! Which Ivy-League will you dominate? 🔨
