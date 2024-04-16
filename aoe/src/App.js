@@ -10,12 +10,13 @@ import upennLogo from './assets/images/upenn.png';
 
 import waitingMusic from './assets/audio/waiting.mp3'
 import victoryMusic from './assets/audio/columbia.mp3';
+import losingMusic from './assets/audio/boo.mp3'
 import playingMusic from './assets/audio/playing.mp3';
 import hitSound from './assets/audio/hit.mp3'
 
 function App() {
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(90); // 1:30 minutes in seconds
+  const [time, setTime] = useState(45); // 1:30 minutes in seconds
   const [gameState, setGameState] = useState('');
   const [winState, setWinState] = useState(false);
   const [hitCount, setHitCount] = useState({
@@ -26,11 +27,12 @@ function App() {
     upenn: 0,
   });
   const timerIntervalRef = useRef(null);
-  const winnerThreshold = 10;
+  const winnerThreshold = 20;
 
   const waitingAudioRef = useRef(new Audio(waitingMusic));
   const playingAudioRef = useRef(new Audio(playingMusic));
   const victoryAudioRef = useRef(new Audio(victoryMusic));
+  const losingAudioRef = useRef(new Audio(losingMusic))
   const hitAudioRef = useRef(new Audio(hitSound));
 
 
@@ -47,6 +49,10 @@ function App() {
         case 'End':
           setGameState('End');
           break;
+        case 'Restart':
+          setGameState('Waiting')
+          window.location.reload();  
+          break; 
         default:
           if (['harvard', 'brown', 'yale', 'princeton', 'upenn'].includes(receivedData.toLowerCase())) {
             setHitCount(prevCount => {
@@ -105,10 +111,20 @@ function App() {
     const summedScore = Object.values(hitCount).reduce((acc, curr) => acc + curr, 0);
     setScore(summedScore);
     setWinState(summedScore > winnerThreshold && gameState === 'End');
+    if(gameState === 'End') {
+      if(summedScore > winnerThreshold) {
+        setWinState(true)
+      } else {
+        setWinState(null)
+      }
+    }
 
     if (winState) {
       stopMusic();
       playMusic(victoryAudioRef.current);
+    } else if(winState === null) {
+      stopMusic();
+      playMusic(losingAudioRef.current);
     }
   }, [hitCount, gameState, winState]);
 
@@ -133,6 +149,8 @@ function App() {
     victoryAudioRef.current.currentTime = 0;
     waitingAudioRef.current.pause();
     waitingAudioRef.current.currentTime = 0;
+    losingAudioRef.current.pause();
+    losingAudioRef.current.currentTime = 0; 
   };
 
   const playHitSound = () => {
@@ -252,7 +270,7 @@ function App() {
           <div className="waiting-text">
             <div className="game-info">
               Welcome! Which Ivy-League will you dominate? 🔨
-              <p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: 'normal', fontSize: 'smaller' }}>Press the Start Button to Get Started!</p>
+              <p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: 'normal', fontSize: 'smaller' }}>Whack Yale get started!</p>
             </div>
           </div>
         )}
@@ -263,7 +281,7 @@ function App() {
               {winState ? (
                 <>
                   <p>Congrats You Won!</p>
-                  <p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: 'normal', fontSize: 'smaller' }}>Wanna play again? Press the Start Button!</p>
+                  <p style={{ textAlign: 'center', fontStyle: 'italic', fontWeight: 'normal', fontSize: 'smaller' }}>Thanks for Playing!</p>
                   <Confetti />
                 </>
               ) : (
