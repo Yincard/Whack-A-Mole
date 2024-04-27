@@ -209,7 +209,7 @@ function App() {
       </h1>
 
       <div className="watermark">
-        <i>A.O.E - Whack-A-Mole Submission: Mohammed, Jeff, Jose, & Rodrigo</i>
+        <i>A.O.E - Whack-A-Mole Submission: [Redacted], [Redacted], [Redacted], & [Redacted]</i>
       </div>
 
       <div className="logos">
